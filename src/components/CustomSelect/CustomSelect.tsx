@@ -57,61 +57,71 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     return selectedOptions === option;
   };
   return (
-    <div
-      className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
-        styles[size]
-      } ${isModal ? styles.modal : ""} `}
-    >
-      <div className={styles.selectInput} onClick={toggleDropdown}>
-        {multiSelect ? (
-          Array.isArray(selectedOptions) && selectedOptions.length > 0 ? (
-            <div className={styles.selectedItems}>
-              {selectedOptions.map((option, index) => (
-                <span key={index} className={styles.text}>
-                  {option}
-                </span>
-              ))}
-            </div>
-          ) : (
-            <span className={styles.placeholder}>{placeholder}</span>
-          )
-        ) : (
-          <span className={styles.text}>{selectedOptions || placeholder}</span>
-        )}
-        {(multiSelect
-          ? Array.isArray(selectedOptions) && selectedOptions.length > 0
-          : selectedOptions !== "") && (
-          <button
-            className={styles.cross}
-            onClick={(e) => {
-              e.stopPropagation();
-              clearContext();
-            }}
-          >
-            ⨉
-          </button>
-        )}
-        <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
-      </div>
-      {isOpen && options.length > 0 && (
-        <ul className={styles.dropdown}>
-          {options.map((option, index) => {
-            const label = typeof option === "string" ? option : option.label;
-            return (
-              <li
-                key={index}
-                className={`${styles.option} ${
-                  isSelected(label) ? styles.selected : ""
-                }`}
-                onClick={() => handleSelect(label)}
-              >
-                {label}
-              </li>
-            );
-          })}
-        </ul>
+    <>
+      {isModal && isOpen && (
+        <div
+          className={styles.modalBackdrop}
+          onClick={() => setIsOpen(false)}
+        />
       )}
-    </div>
+      <div
+        className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
+          styles[size]
+        } ${isModal ? styles.modal : ""} `}
+      >
+        <div className={styles.selectInput} onClick={toggleDropdown}>
+          {multiSelect ? (
+            Array.isArray(selectedOptions) && selectedOptions.length > 0 ? (
+              <div className={styles.selectedItems}>
+                {selectedOptions.map((option, index) => (
+                  <span key={index} className={styles.text}>
+                    {option}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span className={styles.placeholder}>{placeholder}</span>
+            )
+          ) : (
+            <span className={styles.text}>
+              {selectedOptions || placeholder}
+            </span>
+          )}
+          {(multiSelect
+            ? Array.isArray(selectedOptions) && selectedOptions.length > 0
+            : selectedOptions !== "") && (
+            <button
+              className={styles.cross}
+              onClick={(e) => {
+                e.stopPropagation();
+                clearContext();
+              }}
+            >
+              ⨉
+            </button>
+          )}
+          <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
+        </div>
+        {isOpen && options.length > 0 && (
+          <ul className={styles.dropdown}>
+            {options.map((option, index) => {
+              const label = typeof option === "string" ? option : option.label;
+              return (
+                <li
+                  key={index}
+                  className={`${styles.option} ${
+                    isSelected(label) ? styles.selected : ""
+                  }`}
+                  onClick={() => handleSelect(label)}
+                >
+                  {label}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>{" "}
+    </>
   );
 };
 
