@@ -37,7 +37,7 @@ export function App() {
             size="small"
             multiSelect={true}
             filter={true}
-            modal={true}
+            isModal={true}
           />
         </div>
         <div className="large">
@@ -48,7 +48,7 @@ export function App() {
             size="large"
             multiSelect={false}
             filter={true}
-            modal={true}
+            isModal={false}
           />
         </div>
         <br />

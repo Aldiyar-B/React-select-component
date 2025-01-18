@@ -12,6 +12,7 @@ interface CustomSelectProps {
   disabled?: boolean;
   size?: "small" | "large";
   multiSelect: boolean;
+  isModal?: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -20,6 +21,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   disabled = false,
   size = "small",
   multiSelect = false,
+  isModal = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[] | string>("");
@@ -58,7 +60,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div
       className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
         styles[size]
-      } `}
+      } ${isModal ? styles.modal : ""} `}
     >
       <div className={styles.selectInput} onClick={toggleDropdown}>
         {multiSelect ? (

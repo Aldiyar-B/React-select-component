@@ -94,3 +94,25 @@
   color: $black;
   opacity: 0.8;
 }
+
+.modal {
+  z-index: 1000;
+  background-color: $light-gray;
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal .selectInput {
+  cursor: pointer;
+  background-color: $white;
+}
+.modal .dropdown {
+  margin-top: -20px; /*  Сдвигаем к низу */
+
+  width: 93%;
+}
