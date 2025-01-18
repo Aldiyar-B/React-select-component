@@ -36,6 +36,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     setIsOpen(false);
   };
 
+  const clearContext = () => {
+    setSelectedOptions("");
+  };
+
   return (
     <div
       className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
@@ -44,6 +48,17 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     >
       <div className={styles.selectInput} onClick={toggleDropdown}>
         <span className={styles.text}>{selectedOptions || placeholder}</span>
+        {selectedOptions && (
+          <button
+            className={styles.cross}
+            onClick={(event) => {
+              event.stopPropagation();
+              clearContext();
+            }}
+          >
+            ⨉
+          </button>
+        )}
         <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
       </div>
       {isOpen && options.length > 0 && (

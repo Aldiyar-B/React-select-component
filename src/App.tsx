@@ -28,6 +28,9 @@ export function App() {
             options={options}
             placeholder="Выбери значение"
             size="small"
+            multiSelect={true}
+            filter={true}
+            modal={true}
           />
         </div>
         <div className="large">
@@ -36,6 +39,9 @@ export function App() {
             options={options}
             placeholder="Выбери значение"
             size="large"
+            multiSelect={true}
+            filter={true}
+            modal={true}
           />
         </div>
         <br />

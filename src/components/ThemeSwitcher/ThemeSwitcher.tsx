@@ -6,7 +6,12 @@ const ThemeSwitcher: React.FC = () => {
     const newTheme = currentTheme === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", newTheme);
   };
-  return <button onClick={changeTheme}> Поменять тему</button>;
+  return (
+    <button className="button-theme" onClick={changeTheme}>
+      {" "}
+      Поменять тему
+    </button>
+  );
 };
 
 export default ThemeSwitcher;
