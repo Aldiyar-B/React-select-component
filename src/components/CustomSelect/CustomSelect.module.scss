@@ -109,7 +109,7 @@
 
 .modal .selectInput {
   cursor: pointer;
-  background-color: $white;
+  background-color: var(--select-bgc-color);
 }
 .modal .dropdown {
   margin-top: -20px;
