@@ -1,0 +1,25 @@
+//Цвета
+$white: #fff;
+$black: #000000;
+
+//Белая тема
+:root {
+  --font-color: #35414a;
+  --disabled: #86919a;
+  --border-hover: #276bff;
+  --option-bgc: rgba(90, 175, 238, 0.5);
+  --select-bgc-color: #fff;
+  --bgc: #35414a;
+  --font-h2: #fff;
+}
+
+//Черная тема
+[data-theme="dark"] {
+  --font-color: #fff;
+  --disabled: #555555;
+  --border-hover: #4b8cff;
+  --option-bgc: #5aafee;
+  --select-bgc-color: #485761;
+  --bgc: #f7f7f7;
+  --font-h2: #35414a;
+}

@@ -1,13 +1,44 @@
+@import "./assets/styles/variables";
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, system-ui, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #35414a;
+  background-color: var(--bgc);
 }
 
+button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: var(--border-hover);
+  border: 2px solid var(--border-hover);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: transparent;
+    color: var(--border-hover);
+  }
+}
+h1,
+h2 {
+  color: var(--font-h2);
+}
+ul,
+li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

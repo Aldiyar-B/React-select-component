@@ -1,0 +1,75 @@
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/variables";
+
+.customSelect {
+  position: relative;
+  background-color: var(--select-bgc-color);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  color: var(--font-color);
+  width: 100%;
+  @include comforta(500);
+
+  border: 1px solid transparent;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: var(--border-hover);
+  }
+}
+.disabled {
+  background-color: var(--disabled);
+  color: var(--font-color);
+}
+.selectInput {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+}
+.text {
+  width: 100%;
+}
+.arrow {
+  margin-left: 10px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background-color: var(--select-bgc-color);
+  text-decoration: none;
+}
+.dropdown ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.option {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Стили для маленького select */
+.small {
+  max-width: 300px;
+  min-width: 250px;
+  font-size: 18px;
+  height: 38px;
+}
+
+/* Стили для большого select */
+.large {
+  max-width: 450px;
+  min-width: 400px;
+  font-size: 28px;
+}
+
+.option:hover {
+  background-color: var(--option-bgc);
+  color: black;
+  opacity: 0.8;
+}

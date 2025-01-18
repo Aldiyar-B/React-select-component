@@ -4,30 +4,44 @@ import styles from "./CustomSelect.module.scss";
 interface Option {
   id: string | number;
   label: string;
-  icon?: string;
 }
 
 interface CustomSelectProps {
   options?: string[] | Option[];
   placeholder?: string;
+  disabled?: boolean;
+  small?: boolean;
+  large?: boolean;
+  size?: "small" | "large";
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   options = [],
   placeholder = "Введите значение",
+  disabled = false,
+  size = "small",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string | null>(null);
 
-  const toggleDropdown = () => setIsOpen((currentState) => !currentState);
+  const toggleDropdown = () => {
+    if (!disabled) {
+      setIsOpen((currentState) => !currentState);
+    }
+  };
 
   const handleSelect = (option: string) => {
+    if (disabled) return;
     setSelectedOptions(option);
     setIsOpen(false);
   };
 
   return (
-    <div className={styles.customSelect}>
+    <div
+      className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
+        styles[size]
+      } `}
+    >
       <div className={styles.selectInput} onClick={toggleDropdown}>
         <span className={styles.text}>{selectedOptions || placeholder}</span>
         <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
@@ -42,9 +56,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                 className={styles.option}
                 onClick={() => handleSelect(label)}
               >
-                {typeof option !== "string" && option.icon && (
-                  <span>{option.icon}</span>
-                )}
                 {label}
               </li>
             );
