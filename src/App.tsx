@@ -6,7 +6,14 @@ export function App() {
   const options = [
     { id: 1, label: "Option 1" },
     { id: 2, label: "Option 2" },
-    { id: 3, label: "Option 3" }, // Без иконки
+    { id: 3, label: "Option 3" },
+    { id: 4, label: "Option 4" },
+    { id: 5, label: "Option 5" },
+    // { id: 6, label: "Option 6" },
+    // { id: 7, label: "Option 7" },
+    // { id: 8, label: "Option 8" },
+    // { id: 9, label: "Option 9" },
+    // { id: 10, label: "Option 10" },
   ];
   return (
     <>
@@ -39,7 +46,7 @@ export function App() {
             options={options}
             placeholder="Выбери значение"
             size="large"
-            multiSelect={true}
+            multiSelect={false}
             filter={true}
             modal={true}
           />

@@ -1,5 +1,8 @@
-@import "../../assets/styles/mixins";
-@import "../../assets/styles/variables";
+// @import "../../assets/styles/mixins";
+// @import "../../assets/styles/variables";
+
+@use "../../assets/styles/mixins" as *;
+@use "../../assets/styles/variables" as *;
 
 .customSelect {
   position: relative;
@@ -26,14 +29,28 @@
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 0 10px;
 }
-.text {
+.selectedItems {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.text {
+  flex-grow: 1 !important;
 }
 .arrow {
   margin-left: 10px;
+}
+// Стили для Крестика X
+.cross {
+  color: var(--font-color);
+  font-weight: 800;
+  font-size: 20px;
 }
 
 .dropdown {
@@ -51,6 +68,10 @@
   padding: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  &.selected {
+    background-color: var(--option-bgc);
+    color: $black;
+  }
 }
 
 /* Стили для маленького select */
@@ -70,13 +91,6 @@
 
 .option:hover {
   background-color: var(--option-bgc);
-  color: black;
+  color: $black;
   opacity: 0.8;
-}
-
-// Стили для Крестика X
-.cross {
-  color: var(--font-color);
-  font-weight: 800;
-  font-size: 20px;
 }

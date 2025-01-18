@@ -10,9 +10,8 @@ interface CustomSelectProps {
   options?: string[] | Option[];
   placeholder?: string;
   disabled?: boolean;
-  small?: boolean;
-  large?: boolean;
   size?: "small" | "large";
+  multiSelect: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -20,9 +19,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   placeholder = "Введите значение",
   disabled = false,
   size = "small",
+  multiSelect = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<string[] | string>("");
 
   const toggleDropdown = () => {
     if (!disabled) {
@@ -32,14 +32,28 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
   const handleSelect = (option: string) => {
     if (disabled) return;
-    setSelectedOptions(option);
-    setIsOpen(false);
+
+    setSelectedOptions((current) =>
+      multiSelect
+        ? Array.isArray(current) && current.includes(option)
+          ? current.filter((o) => o !== option)
+          : [...(Array.isArray(current) ? current : []), option]
+        : option
+    );
+
+    if (!multiSelect) setIsOpen(false);
   };
 
   const clearContext = () => {
-    setSelectedOptions("");
+    setSelectedOptions(multiSelect ? [] : "");
   };
 
+  const isSelected = (option: string) => {
+    if (multiSelect) {
+      return selectedOptions?.includes(option);
+    }
+    return selectedOptions === option;
+  };
   return (
     <div
       className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
@@ -47,12 +61,28 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       } `}
     >
       <div className={styles.selectInput} onClick={toggleDropdown}>
-        <span className={styles.text}>{selectedOptions || placeholder}</span>
-        {selectedOptions && (
+        {multiSelect ? (
+          Array.isArray(selectedOptions) && selectedOptions.length > 0 ? (
+            <div className={styles.selectedItems}>
+              {selectedOptions.map((option, index) => (
+                <span key={index} className={styles.text}>
+                  {option}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <span className={styles.placeholder}>{placeholder}</span>
+          )
+        ) : (
+          <span className={styles.text}>{selectedOptions || placeholder}</span>
+        )}
+        {(multiSelect
+          ? Array.isArray(selectedOptions) && selectedOptions.length > 0
+          : selectedOptions !== "") && (
           <button
             className={styles.cross}
-            onClick={(event) => {
-              event.stopPropagation();
+            onClick={(e) => {
+              e.stopPropagation();
               clearContext();
             }}
           >
@@ -68,7 +98,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             return (
               <li
                 key={index}
-                className={styles.option}
+                className={`${styles.option} ${
+                  isSelected(label) ? styles.selected : ""
+                }`}
                 onClick={() => handleSelect(label)}
               >
                 {label}
