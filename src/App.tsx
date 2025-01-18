@@ -15,6 +15,25 @@ export function App() {
     // { id: 9, label: "Option 9" },
     // { id: 10, label: "Option 10" },
   ];
+
+  const animals = [
+    { id: 1, label: "Dog" },
+    { id: 2, label: "Cat" },
+    { id: 3, label: "Elephant" },
+    { id: 4, label: "Tiger" },
+    { id: 5, label: "Lion" },
+    { id: 6, label: "Monkey" },
+    { id: 7, label: "Giraffe" },
+    { id: 8, label: "Bear" },
+    { id: 9, label: "Zebra" },
+    { id: 10, label: "Horse" },
+    { id: 11, label: "Kangaroo" },
+    { id: 12, label: "Puppy" },
+    { id: 13, label: "Donkey" },
+    { id: 14, label: "Panda" },
+    { id: 15, label: "Raccoon" },
+  ];
+
   return (
     <>
       <h1>Custom Select</h1>
@@ -27,23 +46,25 @@ export function App() {
             placeholder="Выбери значение"
             disabled
             size="large"
+            filter={true}
+            multiSelect={false}
           />
         </div>
         <div className="small">
           <h2>Small</h2>
           <CustomSelect
-            options={options}
+            options={animals}
             placeholder="Выбери значение"
             size="small"
             multiSelect={true}
             filter={true}
-            isModal={true}
+            isModal={false}
           />
         </div>
         <div className="large">
           <h2>Large</h2>
           <CustomSelect
-            options={options}
+            options={animals}
             placeholder="Выбери значение"
             size="large"
             multiSelect={false}

@@ -13,6 +13,7 @@ interface CustomSelectProps {
   size?: "small" | "large";
   multiSelect: boolean;
   isModal?: boolean;
+  filter?: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -22,10 +23,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   size = "small",
   multiSelect = false,
   isModal = false,
+  filter = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[] | string>("");
-
+  const [filterValue, setFilterValue] = useState("");
   const toggleDropdown = () => {
     if (!disabled) {
       setIsOpen((currentState) => !currentState);
@@ -56,6 +58,16 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     }
     return selectedOptions === option;
   };
+
+  const clearFilter = () => {
+    setFilterValue("");
+  };
+
+  const filteredOptions = options.filter((option) => {
+    const label = typeof option === "string" ? option : option.label;
+    return label.toLowerCase().includes(filterValue.toLowerCase());
+  });
+
   return (
     <>
       {isModal && isOpen && (
@@ -103,24 +115,44 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
         </div>
         {isOpen && options.length > 0 && (
-          <ul className={styles.dropdown}>
-            {options.map((option, index) => {
-              const label = typeof option === "string" ? option : option.label;
-              return (
-                <li
-                  key={index}
-                  className={`${styles.option} ${
-                    isSelected(label) ? styles.selected : ""
-                  }`}
-                  onClick={() => handleSelect(label)}
+          <div className={styles.dropdownContainer}>
+            {filter && isOpen && (
+              <>
+                <input
+                  type="text"
+                  className={styles.filterInput}
+                  placeholder="Поиск..."
+                  value={filterValue}
+                  onChange={(e) => setFilterValue(e.target.value)}
+                />
+                <button
+                  className={styles.clearFilterButton}
+                  onClick={clearFilter} // Очистка фильтра
                 >
-                  {label}
-                </li>
-              );
-            })}
-          </ul>
+                  ⨉
+                </button>
+              </>
+            )}
+            <ul className={styles.dropdown}>
+              {filteredOptions.map((option, index) => {
+                const label =
+                  typeof option === "string" ? option : option.label;
+                return (
+                  <li
+                    key={index}
+                    className={`${styles.option} ${
+                      isSelected(label) ? styles.selected : ""
+                    }`}
+                    onClick={() => handleSelect(label)}
+                  >
+                    {label}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         )}
-      </div>{" "}
+      </div>
     </>
   );
 };
