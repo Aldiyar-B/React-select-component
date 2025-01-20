@@ -26,9 +26,7 @@ const CustomSelect = ({
   filter = false,
 }: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<(string | number)[]>(
-    []
-  ); // Храним только id
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [filterValue, setFilterValue] = useState("");
 
   const toggleDropdown = () => {
@@ -42,7 +40,6 @@ const CustomSelect = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
-
       // Проверка того, был ли сделан клик внутри контейнера
       if (
         dropdownRef.current &&
@@ -62,26 +59,28 @@ const CustomSelect = ({
     };
   }, []);
 
-  const handleSelect = (optionId: string | number) => {
+  const handleSelect = (option: Option) => {
     if (disabled) return;
 
     setSelectedOptions((current) =>
       multiSelect
-        ? current.includes(optionId)
-          ? current.filter((id) => id !== optionId)
-          : [...current, optionId]
-        : [optionId]
+        ? current.some((selectedOption) => selectedOption.id === option.id)
+          ? current.filter((selectedOption) => selectedOption.id !== option.id)
+          : [...current, option]
+        : [option]
     );
 
     if (!multiSelect) setIsOpen(false);
   };
 
-  const isSelected = (optionId: string | number) => {
-    return selectedOptions.includes(optionId);
+  const isSelected = (option: Option) => {
+    return selectedOptions.some(
+      (selectedOption) => selectedOption.id === option.id
+    );
   };
 
   const clearContext = () => {
-    setSelectedOptions(multiSelect ? [] : []);
+    setSelectedOptions(multiSelect ? [] : []); // Для очищения выбранных опций
   };
 
   const clearFilter = () => {
@@ -91,12 +90,6 @@ const CustomSelect = ({
   const filteredOptions = options.filter((option) => {
     return option.label.toLowerCase().includes(filterValue.toLowerCase());
   });
-
-  // Функция для получения label по id
-  const getLabelById = (id: string | number) => {
-    const option = options.find((opt) => opt.id === id);
-    return option ? option.label : "";
-  };
 
   return (
     <>
@@ -115,9 +108,9 @@ const CustomSelect = ({
           {multiSelect ? (
             selectedOptions.length > 0 ? (
               <div className={styles.selectedItems}>
-                {selectedOptions.map((id, index) => (
-                  <span key={index} className={styles.text}>
-                    {getLabelById(id)}
+                {selectedOptions.map((option) => (
+                  <span key={option.id} className={styles.text}>
+                    {option.label}
                   </span>
                 ))}
               </div>
@@ -127,7 +120,7 @@ const CustomSelect = ({
           ) : (
             <span className={styles.text}>
               {selectedOptions.length > 0
-                ? getLabelById(selectedOptions[0])
+                ? selectedOptions[0].label
                 : placeholder}
             </span>
           )}
@@ -166,13 +159,13 @@ const CustomSelect = ({
               </>
             )}
             <ul className={styles.dropdown}>
-              {filteredOptions.map((option, index) => (
+              {filteredOptions.map((option) => (
                 <li
-                  key={index}
+                  key={option.id}
                   className={`${styles.option} ${
-                    isSelected(option.id) ? styles.selected : ""
+                    isSelected(option) ? styles.selected : ""
                   }`}
-                  onClick={() => handleSelect(option.id)}
+                  onClick={() => handleSelect(option)}
                 >
                   {option.label}
                 </li>
