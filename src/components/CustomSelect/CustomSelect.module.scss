@@ -1,6 +1,3 @@
-// @import "../../assets/styles/mixins";
-// @import "../../assets/styles/variables";
-
 @use "../../assets/styles/mixins" as *;
 @use "../../assets/styles/variables" as *;
 
@@ -47,9 +44,9 @@
 }
 .text {
   flex-grow: 1 !important;
-  white-space: nowrap; /* Убирает перенос текста внутри элемента */
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Добавляет троеточие, если текст слишком длинный */
+  text-overflow: ellipsis;
 }
 .arrow {
   margin-left: 10px;
