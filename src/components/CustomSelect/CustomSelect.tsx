@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./CustomSelect.module.scss";
 import Dropdown from "./DropDown/DropDown";
+
 interface Option {
   id: string | number;
   label: string;
+  icon?: string; // Путь к иконке
 }
 
 interface CustomSelectProps {
@@ -45,7 +47,6 @@ const CustomSelect = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
-      // Проверка того, был ли сделан клик внутри контейнера
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(target as Node) &&
@@ -58,7 +59,6 @@ const CustomSelect = ({
 
     document.addEventListener("click", handleClickOutside);
 
-    // Убираем обработчик при размонтировании компонента
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
@@ -79,7 +79,7 @@ const CustomSelect = ({
   };
 
   const clearContext = () => {
-    setSelectedOptions(multiSelect ? [] : []); // Для очищения выбранных опций
+    setSelectedOptions([]);
   };
 
   return (
@@ -101,6 +101,9 @@ const CustomSelect = ({
               <div className={styles.selectedItems}>
                 {selectedOptions.map((option) => (
                   <span key={option.id} className={styles.text}>
+                    {option.icon ? (
+                      <img src={option.icon} className={styles.optionIcon} />
+                    ) : null}
                     {option.label}
                   </span>
                 ))}
@@ -110,14 +113,23 @@ const CustomSelect = ({
             )
           ) : (
             <span className={styles.text}>
-              {selectedOptions.length > 0
-                ? selectedOptions[0].label
-                : placeholder}
+              {selectedOptions.length > 0 ? (
+                <>
+                  {selectedOptions[0].icon && (
+                    <img
+                      src={selectedOptions[0].icon}
+                      alt={selectedOptions[0].label}
+                      className={styles.optionIcon}
+                    />
+                  )}
+                  {selectedOptions[0].label}
+                </>
+              ) : (
+                placeholder
+              )}
             </span>
           )}
-          {(multiSelect
-            ? selectedOptions.length > 0
-            : selectedOptions.length > 0) && (
+          {selectedOptions.length > 0 && (
             <button
               className={styles.cross}
               onClick={(e) => {

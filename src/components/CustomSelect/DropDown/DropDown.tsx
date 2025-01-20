@@ -6,6 +6,7 @@ import Option from "../Option/Option";
 export interface OptionType {
   id: string | number;
   label: string;
+  icon?: string;
 }
 
 interface DropdownProps {

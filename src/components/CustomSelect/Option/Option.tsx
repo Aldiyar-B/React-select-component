@@ -14,7 +14,18 @@ const Option = ({ option, onSelect, isSelected }: OptionProps) => {
       className={`${styles.option} ${isSelected ? styles.selected : ""}`}
       onClick={() => onSelect(option)}
     >
-      {option.label}
+      {option.icon ? (
+        <>
+          <img
+            src={option.icon}
+            alt={option.label}
+            className={styles.optionIcon}
+          />
+          {option.label}
+        </>
+      ) : (
+        option.label
+      )}
     </li>
   );
 };
