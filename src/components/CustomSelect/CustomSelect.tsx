@@ -28,6 +28,11 @@ const CustomSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [filterValue, setFilterValue] = useState("");
+  const [dropdownZIndex, setDropdownZIndex] = useState<number>(1000);
+
+  useEffect(() => {
+    setDropdownZIndex((prevZIndex) => prevZIndex + 1);
+  }, [isOpen]);
 
   const toggleDropdown = () => {
     if (!disabled) {
@@ -143,7 +148,11 @@ const CustomSelect = ({
           <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
         </div>
         {isOpen && options.length > 0 && (
-          <div className={styles.dropdownContainer} ref={dropdownRef}>
+          <div
+            className={styles.dropdownContainer}
+            ref={dropdownRef}
+            style={{ zIndex: dropdownZIndex }}
+          >
             {filter && isOpen && (
               <>
                 <input
