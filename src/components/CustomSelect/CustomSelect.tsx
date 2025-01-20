@@ -88,7 +88,10 @@ const CustomSelect = ({
   };
 
   const filteredOptions = options.filter((option) => {
-    return option.label.toLowerCase().includes(filterValue.toLowerCase());
+    const noGapInput = filterValue.replace(/\s+/g, "").toLowerCase();
+    const noGapLabel = option.label.replace(/\s+/g, "").toLowerCase();
+
+    return noGapLabel.includes(noGapInput);
   });
 
   return (
