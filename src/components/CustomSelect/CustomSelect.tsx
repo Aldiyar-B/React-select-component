@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./CustomSelect.module.scss";
-
+import Dropdown from "./DropDown/DropDown";
 interface Option {
   id: string | number;
   label: string;
@@ -78,26 +78,9 @@ const CustomSelect = ({
     if (!multiSelect) setIsOpen(false);
   };
 
-  const isSelected = (option: Option) => {
-    return selectedOptions.some(
-      (selectedOption) => selectedOption.id === option.id
-    );
-  };
-
   const clearContext = () => {
     setSelectedOptions(multiSelect ? [] : []); // Для очищения выбранных опций
   };
-
-  const clearFilter = () => {
-    setFilterValue("");
-  };
-
-  const filteredOptions = options.filter((option) => {
-    const noGapInput = filterValue.replace(/\s+/g, "").toLowerCase();
-    const noGapLabel = option.label.replace(/\s+/g, "").toLowerCase();
-
-    return noGapLabel.includes(noGapInput);
-  });
 
   return (
     <>
@@ -148,42 +131,15 @@ const CustomSelect = ({
           <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
         </div>
         {isOpen && options.length > 0 && (
-          <div
-            className={styles.dropdownContainer}
-            ref={dropdownRef}
-            style={{ zIndex: dropdownZIndex }}
-          >
-            {filter && isOpen && (
-              <>
-                <input
-                  type="text"
-                  className={styles.filterInput}
-                  placeholder="Поиск..."
-                  value={filterValue}
-                  onChange={(e) => setFilterValue(e.target.value)}
-                />
-                <button
-                  className={styles.clearFilterButton}
-                  onClick={clearFilter}
-                >
-                  ⨉
-                </button>
-              </>
-            )}
-            <ul className={styles.dropdown}>
-              {filteredOptions.map((option) => (
-                <li
-                  key={option.id}
-                  className={`${styles.option} ${
-                    isSelected(option) ? styles.selected : ""
-                  }`}
-                  onClick={() => handleSelect(option)}
-                >
-                  {option.label}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Dropdown
+            options={options}
+            filter={filter}
+            filterValue={filterValue}
+            setFilterValue={setFilterValue}
+            selectedOptions={selectedOptions}
+            onSelect={handleSelect}
+            dropdownZIndex={dropdownZIndex}
+          />
         )}
       </div>
     </>

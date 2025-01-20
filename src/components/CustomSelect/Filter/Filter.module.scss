@@ -1,0 +1,43 @@
+@use "../../../assets/styles/mixins" as *;
+@use "../../../assets/styles/variables" as *;
+
+// ФИЛЬТР
+.filterInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  position: relative;
+}
+
+.dropdownContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--select-bgc-color);
+}
+
+.dropdownContainer input[type="text"] {
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  &::placeholder {
+    color: var(--font-color);
+  }
+}
+
+.clearFilterButton {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  color: var(--font-color);
+  font-size: 18px;
+  padding: 5px;
+}

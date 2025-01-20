@@ -59,32 +59,6 @@
   margin-left: auto;
 }
 
-.dropdown {
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  background-color: var(--select-bgc-color);
-  text-decoration: none;
-
-  max-height: 300px;
-  overflow-y: auto;
-  scrollbar-color: var(--font-color) var(--select-bgc-color);
-}
-
-.dropdown ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-.option {
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  &.selected {
-    background-color: var(--option-bgc);
-    color: $black;
-  }
-}
-
 /* Стили для маленького select */
 .small {
   max-width: 300px;
@@ -137,45 +111,4 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
-}
-
-// ФИЛЬТР
-.filterInput {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 16px;
-  position: relative;
-}
-
-.dropdownContainer {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background: var(--select-bgc-color);
-}
-
-.dropdownContainer input[type="text"] {
-  background: none;
-  border: none;
-  outline: none;
-  color: inherit;
-  font: inherit;
-  &::placeholder {
-    color: var(--font-color);
-  }
-}
-
-.clearFilterButton {
-  position: absolute;
-  right: 5px;
-  top: 0;
-  color: var(--font-color);
-  font-size: 18px;
-  padding: 5px;
 }

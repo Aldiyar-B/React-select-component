@@ -1,0 +1,12 @@
+@use "../../../assets/styles/mixins" as *;
+@use "../../../assets/styles/variables" as *;
+
+.option {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &.selected {
+    background-color: var(--option-bgc);
+    color: $black;
+  }
+}

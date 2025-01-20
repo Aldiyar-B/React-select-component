@@ -1,0 +1,39 @@
+@use "../../../assets/styles/mixins" as *;
+@use "../../../assets/styles/variables" as *;
+
+.dropdownContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--select-bgc-color);
+}
+
+.dropdownContainer input[type="text"] {
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  &::placeholder {
+    color: var(--font-color);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background-color: var(--select-bgc-color);
+  text-decoration: none;
+
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-color: var(--font-color) var(--select-bgc-color);
+}
+
+.dropdown ul {
+  list-style-type: none;
+  padding-left: 0;
+}
