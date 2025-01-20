@@ -32,6 +32,11 @@ export function App() {
     { id: 13, label: "Donkey" },
     { id: 14, label: "Panda" },
     { id: 15, label: "Raccoon" },
+    { id: 16, label: "Dog" },
+    { id: 17, label: "Cat" },
+    { id: 18, label: "Elephant" },
+    { id: 19, label: "Tiger" },
+    { id: 20, label: "Lion" },
   ];
 
   return (

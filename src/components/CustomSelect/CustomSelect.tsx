@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./CustomSelect.module.scss";
 
 interface Option {
@@ -7,7 +7,7 @@ interface Option {
 }
 
 interface CustomSelectProps {
-  options?: string[] | Option[];
+  options?: Option[];
   placeholder?: string;
   disabled?: boolean;
   size?: "small" | "large";
@@ -16,7 +16,7 @@ interface CustomSelectProps {
   filter?: boolean;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({
+const CustomSelect = ({
   options = [],
   placeholder = "Введите значение",
   disabled = false,
@@ -24,39 +24,64 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   multiSelect = false,
   isModal = false,
   filter = false,
-}) => {
+}: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string[] | string>("");
+  const [selectedOptions, setSelectedOptions] = useState<(string | number)[]>(
+    []
+  ); // Храним только id
   const [filterValue, setFilterValue] = useState("");
+
   const toggleDropdown = () => {
     if (!disabled) {
       setIsOpen((currentState) => !currentState);
     }
   };
 
-  const handleSelect = (option: string) => {
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+
+      // Проверка того, был ли сделан клик внутри контейнера
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target as Node) &&
+        target &&
+        !target.closest(`.${styles.selectInput}`)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    // Убираем обработчик при размонтировании компонента
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleSelect = (optionId: string | number) => {
     if (disabled) return;
 
     setSelectedOptions((current) =>
       multiSelect
-        ? Array.isArray(current) && current.includes(option)
-          ? current.filter((o) => o !== option)
-          : [...(Array.isArray(current) ? current : []), option]
-        : option
+        ? current.includes(optionId)
+          ? current.filter((id) => id !== optionId)
+          : [...current, optionId]
+        : [optionId]
     );
 
     if (!multiSelect) setIsOpen(false);
   };
 
-  const clearContext = () => {
-    setSelectedOptions(multiSelect ? [] : "");
+  const isSelected = (optionId: string | number) => {
+    return selectedOptions.includes(optionId);
   };
 
-  const isSelected = (option: string) => {
-    if (multiSelect) {
-      return selectedOptions?.includes(option);
-    }
-    return selectedOptions === option;
+  const clearContext = () => {
+    setSelectedOptions(multiSelect ? [] : []);
   };
 
   const clearFilter = () => {
@@ -64,9 +89,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   };
 
   const filteredOptions = options.filter((option) => {
-    const label = typeof option === "string" ? option : option.label;
-    return label.toLowerCase().includes(filterValue.toLowerCase());
+    return option.label.toLowerCase().includes(filterValue.toLowerCase());
   });
+
+  // Функция для получения label по id
+  const getLabelById = (id: string | number) => {
+    const option = options.find((opt) => opt.id === id);
+    return option ? option.label : "";
+  };
 
   return (
     <>
@@ -79,15 +109,15 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       <div
         className={`${styles.customSelect} ${disabled ? styles.disabled : ""} ${
           styles[size]
-        } ${isModal ? styles.modal : ""} `}
+        } ${isModal ? styles.modal : ""}`}
       >
         <div className={styles.selectInput} onClick={toggleDropdown}>
           {multiSelect ? (
-            Array.isArray(selectedOptions) && selectedOptions.length > 0 ? (
+            selectedOptions.length > 0 ? (
               <div className={styles.selectedItems}>
-                {selectedOptions.map((option, index) => (
+                {selectedOptions.map((id, index) => (
                   <span key={index} className={styles.text}>
-                    {option}
+                    {getLabelById(id)}
                   </span>
                 ))}
               </div>
@@ -96,12 +126,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             )
           ) : (
             <span className={styles.text}>
-              {selectedOptions || placeholder}
+              {selectedOptions.length > 0
+                ? getLabelById(selectedOptions[0])
+                : placeholder}
             </span>
           )}
           {(multiSelect
-            ? Array.isArray(selectedOptions) && selectedOptions.length > 0
-            : selectedOptions !== "") && (
+            ? selectedOptions.length > 0
+            : selectedOptions.length > 0) && (
             <button
               className={styles.cross}
               onClick={(e) => {
@@ -115,7 +147,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
         </div>
         {isOpen && options.length > 0 && (
-          <div className={styles.dropdownContainer}>
+          <div className={styles.dropdownContainer} ref={dropdownRef}>
             {filter && isOpen && (
               <>
                 <input
@@ -127,28 +159,24 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                 />
                 <button
                   className={styles.clearFilterButton}
-                  onClick={clearFilter} // Очистка фильтра
+                  onClick={clearFilter}
                 >
                   ⨉
                 </button>
               </>
             )}
             <ul className={styles.dropdown}>
-              {filteredOptions.map((option, index) => {
-                const label =
-                  typeof option === "string" ? option : option.label;
-                return (
-                  <li
-                    key={index}
-                    className={`${styles.option} ${
-                      isSelected(label) ? styles.selected : ""
-                    }`}
-                    onClick={() => handleSelect(label)}
-                  >
-                    {label}
-                  </li>
-                );
-              })}
+              {filteredOptions.map((option, index) => (
+                <li
+                  key={index}
+                  className={`${styles.option} ${
+                    isSelected(option.id) ? styles.selected : ""
+                  }`}
+                  onClick={() => handleSelect(option.id)}
+                >
+                  {option.label}
+                </li>
+              ))}
             </ul>
           </div>
         )}

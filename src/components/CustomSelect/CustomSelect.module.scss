@@ -7,7 +7,7 @@
 .customSelect {
   position: relative;
   background-color: var(--select-bgc-color);
-  height: 68px;
+  height: auto;
   display: flex;
   align-items: center;
   color: var(--font-color);
@@ -21,9 +21,12 @@
     border-color: var(--border-hover);
   }
 }
+
 .disabled {
   background-color: var(--disabled);
   color: var(--font-color);
+  cursor: none;
+  pointer-events: none;
 }
 .selectInput {
   cursor: pointer;
@@ -31,17 +34,22 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 }
 .selectedItems {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   width: 100%;
   align-items: center;
-  flex-wrap: wrap;
 }
 .text {
   flex-grow: 1 !important;
+  white-space: nowrap; /* Убирает перенос текста внутри элемента */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Добавляет троеточие, если текст слишком длинный */
 }
 .arrow {
   margin-left: 10px;
@@ -51,6 +59,7 @@
   color: var(--font-color);
   font-weight: 800;
   font-size: 20px;
+  margin-left: auto;
 }
 
 .dropdown {
@@ -59,7 +68,12 @@
   width: 100%;
   background-color: var(--select-bgc-color);
   text-decoration: none;
+
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-color: var(--font-color) var(--select-bgc-color);
 }
+
 .dropdown ul {
   list-style-type: none;
   padding-left: 0;
@@ -79,7 +93,7 @@
   max-width: 300px;
   min-width: 250px;
   font-size: 18px;
-  height: 38px;
+  height: auto;
 }
 
 /* Стили для большого select */
@@ -87,6 +101,7 @@
   max-width: 450px;
   min-width: 400px;
   font-size: 28px;
+  height: auto;
 }
 
 .option:hover {
@@ -147,6 +162,7 @@
   z-index: 1000;
   background: var(--select-bgc-color);
 }
+
 .dropdownContainer input[type="text"] {
   background: none;
   border: none;
