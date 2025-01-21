@@ -38,22 +38,26 @@
 .selectedItems {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  width: 100%;
+  gap: 15px;
   align-items: center;
+  width: 80%;
 }
 .text {
-  flex-grow: 1 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
 }
+.itemsAction {
+  margin-left: auto;
+}
+
 .arrow {
   margin-left: 10px;
 }
 // Стили для Крестика X
 .cross {
-  color: var(--font-color);
+  color: var(--cross-color);
   font-weight: 800;
   font-size: 20px;
   margin-left: auto;

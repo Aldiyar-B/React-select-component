@@ -17,6 +17,7 @@ interface DropdownProps {
   selectedOptions: OptionType[];
   onSelect: (option: OptionType) => void;
   dropdownZIndex: number;
+  dropdownRef: React.RefObject<HTMLDivElement>;
 }
 
 const Dropdown = ({
@@ -27,6 +28,7 @@ const Dropdown = ({
   selectedOptions,
   onSelect,
   dropdownZIndex,
+  dropdownRef,
 }: DropdownProps) => {
   const filteredOptions = options.filter((option) => {
     const noGapInput = filterValue.replace(/\s+/g, "").toLowerCase();
@@ -39,6 +41,7 @@ const Dropdown = ({
     <div
       className={styles.dropdownContainer}
       style={{ zIndex: dropdownZIndex }}
+      ref={dropdownRef}
     >
       {filter && (
         <Filter filterValue={filterValue} setFilterValue={setFilterValue} />

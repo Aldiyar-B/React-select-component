@@ -129,18 +129,20 @@ const CustomSelect = ({
               )}
             </span>
           )}
-          {selectedOptions.length > 0 && (
-            <button
-              className={styles.cross}
-              onClick={(e) => {
-                e.stopPropagation();
-                clearContext();
-              }}
-            >
-              ⨉
-            </button>
-          )}
-          <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
+          <div className={styles.itemsAction}>
+            {selectedOptions.length > 0 && (
+              <button
+                className={styles.cross}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clearContext();
+                }}
+              >
+                ⨉
+              </button>
+            )}
+            <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
+          </div>
         </div>
         {isOpen && options.length > 0 && (
           <Dropdown
@@ -151,6 +153,7 @@ const CustomSelect = ({
             selectedOptions={selectedOptions}
             onSelect={handleSelect}
             dropdownZIndex={dropdownZIndex}
+            dropdownRef={dropdownRef}
           />
         )}
       </div>
